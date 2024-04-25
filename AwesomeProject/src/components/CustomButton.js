@@ -5,7 +5,7 @@ const CustomButton = ({setWidth, buttonText, handleOnPess, buttonColor, pressBut
   return (
 
     <Pressable 
-    onPress={handleOnPess}
+      onPress={()=>handleOnPess()}
       style={({pressed})  => [{
       backgroundColor: pressed ? pressButtonColor : buttonColor,
       width: setWidth,
