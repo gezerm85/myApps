@@ -1,14 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView,  } from 'react-native'
 import React from 'react'
+import { formatDistance, parseISO, } from 'date-fns'
+import { tr } from 'date-fns/locale'
 
 const RoomsCard = ({title, handleOnPress}) => {
+
+  const formatDate = formatDistance(parseISO(title.date), new Date(),
+   { addSuffix: true, locale: tr })
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll_container} >
         <View>
           <TouchableOpacity style={styles.innerContainer} onPress={handleOnPress}>
             <Text style={styles.title_box}>{title.roomName}</Text>
-            <Text style={styles.date_box}>{title.date}</Text>
+            <Text style={styles.date_box}>{formatDate}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -41,7 +41,7 @@ const UserStack = () => {
           headerStyle: { backgroundColor: '#CCA004' },
           headerTitle:{},
           headerRight: ()=> <TouchableOpacity onPress={handleSignOut} ><FontAwesome name="sign-out" size={25} color="black" /></TouchableOpacity> }} 
-          name="Rooms" component={RoomsPages}/>
+          name="Rooms" component={RoomsPages} headerTitle="Odalar"/>
         <Stack.Screen 
           options={{ headerTitleAlign:'center',
           headerTintColor:'#1c1c1c',
