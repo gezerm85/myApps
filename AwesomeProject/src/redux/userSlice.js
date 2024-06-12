@@ -87,8 +87,6 @@ const initialState ={
     error: null,
 }
 
-console.log("Redux Email",initialState.email) 
-
 
 export const userSlice = createSlice({
     name: 'user',

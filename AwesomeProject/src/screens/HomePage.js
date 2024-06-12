@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Pressable, TextInput } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Pressable, TextInput, Keyboard } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc  } from "firebase/firestore"
 import {db} from '../../firebaseConfig'
-import Animated, {BounceIn} from 'react-native-reanimated';
+import Animated, {BounceIn, FadeIn, BounceInRight, BounceOutLeft} from 'react-native-reanimated';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const HomePage = () => {
@@ -15,7 +17,7 @@ const HomePage = () => {
 
   useEffect(() => {
     getData()
-  }, [isSaved])
+  }, [data])
   
 
  // SEND DATA FROM FIRESBASE
@@ -23,7 +25,7 @@ const HomePage = () => {
     try {
       if (!text) {
         return;
-      }
+      } 
       const docRef = await addDoc(collection(db, "TodoList"), {
         todo: text,
       });
@@ -54,7 +56,7 @@ const HomePage = () => {
 
   const deleteData = async(value) =>{
     try {
-      await deleteDoc(doc(db, "users", value));
+      await deleteDoc(doc(db, "TodoList", value));
     } catch (e) {
       console.log("error: ", e)
     }
@@ -79,14 +81,21 @@ const HomePage = () => {
     sendData()
     setIsSaved(!isSaved)
     setText('')
+    Keyboard.dismiss()
   }
 
   const renderItem = ({item, index})=>{
     return(
       <Animated.View
-      entering={BounceIn.delay(100 * index + 1)}
+      entering={BounceInRight.delay(100 * index + 1)}
+      exiting={BounceOutLeft}
+      style={styles.todoContainer}
       >
-      <Text style={styles.dataText}>{item.todo}</Text>
+        <FontAwesome name="edit" size={24} color="black" />
+        <Text style={styles.dataText}> {index} {item.todo}</Text>
+        <MaterialCommunityIcons 
+        onPress={()=>[deleteData(item.id), setIsSaved(isSaved === false ? true : false)]}
+        name="delete" size={24} color="black" />
       </Animated.View>
     )
   }
@@ -94,7 +103,7 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-
+      <Text style={styles.todoTitle}>Todo List</Text>
           <View style={styles.innerContainer}>
             <FlatList
               renderItem={renderItem}
@@ -106,8 +115,8 @@ const HomePage = () => {
 
           <View style={styles.inputContainer} >
               <TextInput style={styles.inputData}
-              placeholder='Enter Your Data'
-              placeholderTextColor={'#fff'}
+              placeholder='Yapılacaklar..'
+              placeholderTextColor={'#000'}
               onChangeText={setText}
               value={text}
             />
@@ -125,11 +134,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        backgroundColor: 'tomato',
+        backgroundColor: '#fff',
     },
+    todoContainer:{
+      flex1: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderWidth: 1,
+      marginBottom: 20,
+      borderRadius: 15,
+      padding: 15,
+      gap: 5,
+    },
+
     innerContainer:{
         flex: 1,
-        padding: 50,
+        backgroundColor: '#ebe7e7',
+        paddingHorizontal: 10,
     },
     inputContainer:{
       flexDirection: 'row',
@@ -141,22 +163,20 @@ const styles = StyleSheet.create({
     },
     dataText:{
       fontSize: 18,
-      color: '#fff',
+      color: '#000',
       fontWeight: 'semibold',
-      borderWidth: 1,
-      padding: 15,
-      textAlign: 'center',
-      borderRadius: 10,
-      marginBottom: 20,
-
+      textAlign: 'left',
+      flex: 1,
     },
-    dataIndex:{
-      fontSize: 20,
-      color: 'blue',
+    todoTitle:{
+      fontSize: 30,
+      textAlign: 'center',
+      color: 'tomato',
       fontWeight: 'bold',
+      paddingVertical: 20,
     },
     inputData:{
-      color: '#fff',
+      color: '#000',
       borderWidth: 1,
       padding: 10,
       marginVertical: 10,
