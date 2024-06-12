@@ -60,7 +60,6 @@ export const signup = createAsyncThunk('user/signup', async ({ email, password }
     }
   });
 
-
 export const logout = createAsyncThunk('user/signOut', async()=>{
     try {
         const auth = getAuth()
