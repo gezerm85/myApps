@@ -1,5 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, signOut} from 'firebase/auth'
 
 export const login = createAsyncThunk('user/login', async({email, password}) =>{
     try {
@@ -8,12 +9,12 @@ export const login = createAsyncThunk('user/login', async({email, password}) =>{
 
         const user = userCredential.user;
         const token = user.stsTokenManager.accessToken;
-
+        
         const userData ={
             token,
             user: user,
-
-        }
+            }
+        await AsyncStorage.setItem("userToken", token)
 
         return userData
     } catch (error) {
@@ -22,6 +23,59 @@ export const login = createAsyncThunk('user/login', async({email, password}) =>{
         
     }
 })
+
+
+export const autoLogin = createAsyncThunk('user/autoLogin', async()=>{
+    try {
+        const token = await AsyncStorage.getItem('userToken')
+        if(token){
+            return token
+        }else{
+            throw new Error('user not found')
+        }
+
+    } catch (error) {
+        throw error
+    }
+})
+
+
+export const signup = createAsyncThunk('user/signup', async ({ email, password }) => {
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const token = user.stsTokenManager.accessToken;
+      await sendEmailVerification(user)
+
+      await AsyncStorage.setItem("userToken", token)
+  
+      console.log("Kullanıcı başarıyla oluşturuldu:", user.uid);
+  
+      return token;
+
+    } catch (error) {
+      console.error("Kullanıcı oluşturma hatası:", error.message);
+      throw error;
+    }
+  });
+
+
+export const logout = createAsyncThunk('user/signOut', async()=>{
+    try {
+        const auth = getAuth()
+        const userSignOut = await signOut(auth)
+        await AsyncStorage.removeItem('userToken')
+        console.log("çıkış yaptın")
+        return  userSignOut
+    } catch (error) {
+        console.log("çıkış olmadı", error.message)
+    }
+})
+
+ 
+
+  
 
 
 const initialState ={
@@ -33,6 +87,9 @@ const initialState ={
     user: null,
     error: null,
 }
+
+console.log("Redux Email",initialState.email) 
+
 
 export const userSlice = createSlice({
     name: 'user',
@@ -67,6 +124,56 @@ export const userSlice = createSlice({
                     state.isAuth = false;
                     state.error = action.error.message;
                 })
+
+
+                .addCase(signup.pending, (state)=>{
+                    state.isloading = true
+                    state.isAuth = false
+                })
+                .addCase(signup.fulfilled, (state, action)=>{
+                    state.isloading = false;
+                    state.isAuth = true;
+                    state.token = action.payload;
+                    
+                })
+                .addCase(signup.rejected, (state, action)=>{
+                    state.isloading = false;
+                    state.isAuth = false;
+                    state.error = action.error.message;
+                })
+
+
+                .addCase(logout.pending,(state)=>{
+                    state.isloading = true
+                    state.isAuth = false
+                })
+                .addCase(logout.fulfilled,(state, action)=>{
+                    state.isloading = false
+                    state.isAuth = false
+                    state.token = action.payload
+                })
+                .addCase(logout.rejected,(state, action)=>{
+                    state.isloading = false
+                    state.isAuth = false
+                    state.error = action.error.message
+                })
+
+                
+                .addCase(autoLogin.pending, (state)=>{
+                    state.isloading = true
+                    state.isAuth = false
+                })
+                .addCase(autoLogin.fulfilled, (state, action)=>{
+                    state.isloading = false
+                    state.isAuth = true
+                    state.token = action.payload
+                })
+                .addCase(autoLogin.rejected, (state, action)=>{
+                    state.isloading = false
+                    state.isAuth = false
+                    state.error = action.error.message
+                })
+
     }
 })
 

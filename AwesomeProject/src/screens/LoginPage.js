@@ -8,15 +8,17 @@ import { StyleSheet,
    SafeAreaView,
    } from 'react-native';
 
-   import React, { useState } from 'react';
+   import React, { useState, useEffect } from 'react';
    import {CustomButton, CustomTextInput, Loading,  } from '../components';
-   import { login } from '../redux/userSlice';
+   import { login, autoLogin } from '../redux/userSlice';
 
    import { useSelector, useDispatch } from 'react-redux';
    import { setIsLoading, } from '../redux/userSlice';
    
 
   const LoginPage = ({navigation}) => {
+
+
  
    const [email, setEmail] = useState("")
    const [password, setPassword] = useState("")
@@ -26,6 +28,10 @@ import { StyleSheet,
 
   // useSlice içerisindeki reducer yapılarını kullanma veya veri gönderme
   const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(autoLogin())
+  },[])
 
   return (
     <SafeAreaView style={styles.container}>

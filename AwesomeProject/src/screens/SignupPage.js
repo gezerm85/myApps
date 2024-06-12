@@ -2,13 +2,22 @@ import { StyleSheet, Text, View, TextInput, Image, Pressable, } from 'react-nati
 import React, { useState } from 'react'
 import { CustomButton, CustomTextInput,Loading } from '../components'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { setEmail, setPassword, setIsLoading } from '../redux/userSlice';
+import { signup } from '../redux/userSlice';
 
 const SignupPage = ({navigation}) => {
   
   const [name, setName] = useState ('');
-  const [email, setEmail] = useState ('');
-  const [password, setPassword] = useState ('');
-  
+
+
+
+    const dispatch = useDispatch()
+    const {email, password, isloading} = useSelector((state)=> state.user)
+
+    
+
 
 
   return (
@@ -35,14 +44,14 @@ const SignupPage = ({navigation}) => {
             <CustomTextInput
               title={'Email'}
               handlePlaceholder={'Enter Your Email'}
-              handleOnchangeText={setEmail}
+              handleOnchangeText={(text)=> dispatch(setEmail(text))}
               handValue={email}
               isSecuraText={false}
             />
             <CustomTextInput
               title={'Password'}
               handlePlaceholder={'Create Your Password'}
-              handleOnchangeText={setPassword}
+              handleOnchangeText={(text)=> dispatch(setPassword(text))}
               handValue={password}
               isSecuraText={true}
             />
@@ -55,7 +64,7 @@ const SignupPage = ({navigation}) => {
         <CustomButton
           buttonText={'Sign Up'}
           setWidth="80%"
-          handleOnPess={()=> console.log(name, " ", email, " ", password,) }
+          handleOnPess={()=> dispatch(signup({email, password}))}
           buttonColor="blue"
           pressButtonColor="gray"
         />
@@ -73,7 +82,10 @@ const SignupPage = ({navigation}) => {
         </Pressable>
 
       </View>
-      
+      {isloading
+        ? <Loading
+          changeIsLoding={()=> dispatch(setIsLoading(false))}/>
+        : null}
 
     </SafeAreaView>
 
@@ -102,16 +114,14 @@ const styles = StyleSheet.create({
     inputContainer: {
       flex: 2,
       width: '100%',
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
       alignItems: 'center',
-      paddingVertical:20,
-     
      
 
     },
 
     buttonContainer:{
-      flex: 2,
+      flex: 1,
       width: '100%',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -131,7 +141,7 @@ const styles = StyleSheet.create({
     signupIcon: {
       width: 100,
       height: 100,
-      marginBottom: 20,
+      marginVertical: 30,
       justifyContent: 'center',
       alignItems: 'center',
     },
