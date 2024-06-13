@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Pressable, TextInput, Keyboard } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard, Alert } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc  } from "firebase/firestore"
 import {db} from '../../firebaseConfig'
-import Animated, {BounceIn, FadeIn, BounceInRight, BounceOutLeft} from 'react-native-reanimated';
+import Animated, {BounceInRight, BounceOutLeft} from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 
 const HomePage = () => {
@@ -12,6 +13,8 @@ const HomePage = () => {
   const [data, setData] = useState([])
   const [isSaved, setIsSaved] = useState(false)
   const [text, setText] = useState('')
+  const [editedText, setEditedText] = useState({})
+  const [editModes, setEditModes] = useState({});
 
 
 
@@ -64,35 +67,66 @@ const HomePage = () => {
 
   //    UPDATE DATA FROM FIRESBASE
 
-  const updateData = async(value) =>{
+  const updateData = async (item) => {
     try {
-    const ageData = doc(db, "users", value);
-
-      // Set the "capital" field of the city 'DC'
-      await updateDoc(ageData, {
-        age: updateTheData
+      const docRef = doc(db, "TodoList", item.id);
+      await updateDoc(docRef, {
+        todo: editedText[item.id]
       });
-    } catch (e) {
-      console.log("error: ", e)
+      
+ } catch (e) {
+      console.log("error: ", e);
     }
   }
 
   const handleSendData = () =>{
     sendData()
-    setIsSaved(!isSaved)
     setText('')
     Keyboard.dismiss()
   }
 
+
+
+  const toggleEditMode = (id) => {
+    setEditModes(prevState => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
+
+  const handleUpdateItem = (item) => {
+    updateData(item);
+    toggleEditMode(item.id);
+  };
+
+
+
   const renderItem = ({item, index})=>{
+    const isEditing = editModes[item.id];
     return(
       <Animated.View
       entering={BounceInRight.delay(100 * index + 1)}
-      exiting={BounceOutLeft}
+      exiting={BounceOutLeft.delay(200 * index + 1)}
       style={styles.todoContainer}
       >
-        <FontAwesome name="edit" size={24} color="black" />
-        <Text style={styles.dataText}> {index} {item.todo}</Text>
+      {
+        isEditing
+          ? <AntDesign onPress={() => handleUpdateItem(item)} name="checkcircle" size={24} color="black" />
+          : <FontAwesome onPress={() => toggleEditMode(item.id)} name="edit" size={24} color="black" />
+      }
+        {
+          isEditing
+            ? <TextInput
+              placeholder='Edit item'
+              value={editedText[item.id]}
+              onChangeText={(text) => setEditedText(prevState => ({
+                ...prevState,
+                [item.id]: text
+              }))}
+              style={styles.inputEditData}
+            />
+            : <Text style={styles.dataText}>{item.todo}</Text>
+        }
         <MaterialCommunityIcons 
         onPress={()=>[deleteData(item.id), setIsSaved(isSaved === false ? true : false)]}
         name="delete" size={24} color="black" />
@@ -102,29 +136,31 @@ const HomePage = () => {
   
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.todoTitle}>Todo List</Text>
-          <View style={styles.innerContainer}>
-            <FlatList
-              renderItem={renderItem}
-              data={data}
-              keyExtractor={(item)=> item.id}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
+      <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss}>
+          <View style={styles.container}>              
+            <Text style={styles.todoTitle}>Todo List</Text>
+                  <View style={styles.innerContainer}>
+                    <FlatList
+                      renderItem={renderItem}
+                      data={data}
+                      keyExtractor={(item)=> item.id}
+                      showsVerticalScrollIndicator={false}
+                      />
+                  </View>
 
-          <View style={styles.inputContainer} >
-              <TextInput style={styles.inputData}
-              placeholder='Yapılacaklar..'
-              placeholderTextColor={'#000'}
-              onChangeText={setText}
-              value={text}
-            />
-              <TouchableOpacity onPress={handleSendData} style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Gönder</Text>
-              </TouchableOpacity>
+                  <View style={styles.inputContainer} >
+                      <TextInput style={styles.inputData}
+                      placeholder='Yapılacaklar..'
+                      placeholderTextColor={'#000'}
+                      onChangeText={setText}
+                      value={text}
+                      />
+                      <TouchableOpacity onPress={handleSendData} style={styles.buttonContainer}>
+                        <Text style={styles.buttonText}>Gönder</Text>
+                      </TouchableOpacity>
+                  </View>
           </View>
-    </View>
+      </TouchableWithoutFeedback> 
   )
 }
 
@@ -141,9 +177,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderWidth: 1,
+      borderBottomWidth: 1,
       marginBottom: 20,
-      borderRadius: 15,
       padding: 15,
       gap: 5,
     },
@@ -152,6 +187,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ebe7e7',
         paddingHorizontal: 10,
+        paddingTop: 20,
     },
     inputContainer:{
       flexDirection: 'row',
@@ -183,6 +219,9 @@ const styles = StyleSheet.create({
       width: '75%',
       height: 50,
       borderRadius: 10,
+    },
+    inputEditData:{
+      flex: 1,
     },
     buttonContainer:{
       backgroundColor: '#152a91',
