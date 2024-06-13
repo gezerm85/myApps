@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, FlatList, Image, Pressable, TouchableOpacity,  } from 'react-native';
 import React, {useState} from 'react';
-import { InputBar, InputBtnBar,} from './src/components';
+import { InputBar, InputBtnBar, TodoListCard,} from './src/components';
 
 
 export default function App() {
@@ -56,24 +56,7 @@ export default function App() {
           extraData={todoList}
           keyExtractor={(item, index) =>
           index.toString()}
-          renderItem={({item, index})=> (
-            <TouchableOpacity style={styles.todoContainer}
-              onPress={() => toggleTodo(index)}
-            >  
-              <View style={styles.todoItem}>
-              <Text style={[styles.todoItemText, item.completed ? { textDecorationLine: 'line-through' } : null,]}>{`${index + 1}: ${item.text}`}</Text>
-              </View>
-
-              <View style={styles.removeContainer}>
-              <Pressable style={styles.removeButton} onPress={() => removeTodo(index)}>
-                    <Image style={styles.removeIcon}
-                      source={require('./assets/images/remove.png')}
-                    />
-                </Pressable>
-              </View>
-            </TouchableOpacity>
-            
-          )}
+          renderItem={({item, index})=> <TodoListCard index={index} item={item} removeTodo={() => removeTodo(index)} toggleTodo={() => toggleTodo(index)} />}
         /> 
   
  
