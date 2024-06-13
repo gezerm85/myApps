@@ -85,7 +85,7 @@ const initialState ={
     token: null,
     user: null,
     error: null,
-}
+} 
 
 
 export const userSlice = createSlice({

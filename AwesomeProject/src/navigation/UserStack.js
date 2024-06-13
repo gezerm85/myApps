@@ -1,24 +1,39 @@
 import React from 'react'
 import {HomePage, ProfilePage} from '../screens'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { logout } from '../redux/userSlice';
-import { useDispatch } from 'react-redux';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
 const UserStack = () => {
 
-  const dispatch = useDispatch()
+  const navigation = useNavigation()
   return (
 
     <Stack.Navigator
-        initialRouteName='Home'>
+        initialRouteName='Home'
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'tomato'
+          },
+          headerTitleStyle:{
+            color: '#fff',
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+        >
 
         <Stack.Screen options={{
-          headerRight:()=> <MaterialIcons onPress={()=>dispatch(logout())} name="logout" size={24} color="black" />
+          
+          headerRight:()=> <FontAwesome onPress={()=> navigation.navigate('Profile')} name="user" size={25} color="#fff" />
         }} name='Home' component={HomePage}/>
-        <Stack.Screen name='Profile' component={ProfilePage}/>
+        <Stack.Screen
+          options={{
+            headerTintColor: '#fff'
+          }}
+        name='Profile' component={ProfilePage}/>
 
     </Stack.Navigator>
 
