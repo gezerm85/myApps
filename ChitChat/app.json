@@ -4,10 +4,10 @@
     "slug": "ChitChat",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ChitChat_icon.png",
+    "icon": "./src/assets/ChitChat_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/ChitChat_icon.png",
+        "foregroundImage": "./src/assets/ChitChat_icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/favicon.png"
     }
   }
 }
