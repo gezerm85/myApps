@@ -69,13 +69,13 @@ const MessagesPages = ({ route }) => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={messageContent}
-            renderItem={renderContent}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+        <FlatList
+          style={styles.flatListContainer}
+          data={messageContent}
+          renderItem={renderContent}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
         <View style={styles.messageInputContainer}>
           <TextInput
             style={styles.messageInput}

@@ -1,4 +1,4 @@
-import { Text, View, ScrollView } from "react-native";
+import { Text, View,  } from "react-native";
 import React from "react";
 import { parseISO, format } from "date-fns";
 import { tr } from "date-fns/locale";
@@ -13,8 +13,6 @@ const MessagesCard = ({ message }) => {
 
   const userMail = getAuth().currentUser.email;
   const userName = userMail.split("@")[0];
-
-  console.log(userName);
 
   return (
     <View

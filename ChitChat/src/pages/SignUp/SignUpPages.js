@@ -1,4 +1,4 @@
-import { View, Image, SafeAreaView } from "react-native";
+import { View, Image, SafeAreaView, Dimensions } from "react-native";
 import React from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import InputCard from "../../components/cards/InputCard/InputCard";

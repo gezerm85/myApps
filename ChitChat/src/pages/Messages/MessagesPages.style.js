@@ -16,6 +16,7 @@ export default styles = StyleSheet.create({
     height: 50,
     justifyContent: "space-between",
     marginHorizontal: 16,
+    marginBottom: 8,
     gap: 8,
   },
   title: {

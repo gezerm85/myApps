@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "../AuthStack/AuthStack";
 import UserStack from "../UserStack/UserStack";
+import UserTabs from "../UserTabs/UserTabs";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../../../firebaseConfig";
 import FlashMessage from "react-native-flash-message";
@@ -19,7 +20,7 @@ const RootNavigation = () => {
   }, []);
   return (
     <NavigationContainer>
-      {!isAuth ? <AuthStack /> : <UserStack />}
+      {!isAuth ? <AuthStack /> : <UserTabs />}
       <FlashMessage position="top" />
       <StatusBar style="auto" />
     </NavigationContainer>

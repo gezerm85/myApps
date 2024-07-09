@@ -1,56 +1,16 @@
 import { FlatList, View, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
-import FloatingButton from "../../components/FloatingButton/FloatingButton";
-import ContentInputModal from "../../components/modal/ContentInputModal";
 import RoomsCard from "../../components/cards/RoomsCard/RoomsCard";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  push,
-  remove,
-} from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { db } from "../../../firebaseConfig";
-import { showMessage } from "react-native-flash-message";
 import styles from "./RoomsPages.style";
 import Animated, {
   BounceInRight,
-  BounceIn,
   BounceOutLeft,
-  FlipOutYLeft,
-  Easing,
-  BounceOut,
 } from "react-native-reanimated";
 
 const RoomsPages = ({ navigation }) => {
-  const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState(null);
-
-  function writeUserData(text) {
-    const db = getDatabase();
-    const roomsRef = ref(db, "Rooms");
-    const newRoomRef = push(roomsRef);
-    set(newRoomRef, {
-      roomName: text,
-      date: new Date().toISOString(),
-      id: newRoomRef.key,
-    })
-      .then(() => {
-        showMessage({
-          message: "Oda Kuruldu",
-          description: "İyi Sohbetler",
-          type: "success",
-        });
-      })
-      .catch((error) => {
-        showMessage({
-          message: error.code,
-          description: "Bir şeyler ters gitti",
-          type: "danger",
-        });
-      });
-  }
 
   useEffect(() => {
     getRooms();
@@ -126,15 +86,6 @@ const RoomsPages = ({ navigation }) => {
         renderItem={renderRooms}
         keyExtractor={(item, index) => index.toString()}
         style={styles.list}
-      />
-
-      <View style={styles.floatingContainer}>
-        <FloatingButton onPress={() => setVisible(true)} />
-      </View>
-      <ContentInputModal
-        visible={visible}
-        onClose={() => setVisible(!visible)}
-        onSend={writeUserData}
       />
     </View>
   );
