@@ -1,56 +1,27 @@
 import { View, Image, SafeAreaView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import InputCard from "../../components/cards/InputCard/InputCard";
 import { Formik } from "formik";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { showMessage } from "react-native-flash-message";
+import { useDispatch } from "react-redux";
 import styles from "./LoginPages.style";
+import { autoLogin, login} from "../../redux/userSlice";
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const LoginPages = ({ navigation }) => {
-  useEffect(() => {
-    checkAutoLogin();
-  }, []);
+  const [openEye, setOpenEye] = useState(false)
 
-  const checkAutoLogin = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    if (userToken) {
-      const { email, password } = JSON.parse(userToken);
-      signIn(email, password);
-    }
-  };
+  const dispatch = useDispatch()
 
   const handleLogin = async (values, { resetForm }) => {
     const { email, password } = values;
-    signIn(email, password, resetForm);
+    dispatch(login({email, password}))
+    resetForm()
   };
 
-  const signIn = async (email, password, resetForm) => {
-    try {
-      const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password);
-      await AsyncStorage.setItem(
-        "userToken",
-        JSON.stringify({ email, password })
-      );
-      showMessage({
-        message: "Login",
-        description: "Giriş Başarılı :)",
-        type: "success",
-      });
-    } catch (error) {
-      showMessage({
-        message: "Hatalı Giriş",
-        description: "Bir şeyler ters gitti :(",
-        type: "danger",
-      });
-    } finally {
-      if (resetForm) {
-        resetForm();
-      }
-    }
-  };
+  useEffect(()=>{
+    dispatch(autoLogin())
+  },[dispatch])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +35,7 @@ const LoginPages = ({ navigation }) => {
         initialValues={{ email: "", password: "" }}
         onSubmit={handleLogin}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, resetForm}) => (
           <View style={styles.formikContainer}>
             <View style={styles.InputContainer}>
               <InputCard
@@ -73,13 +44,20 @@ const LoginPages = ({ navigation }) => {
                 handleValue={values.email}
                 secureText={false}
                 handleBlur={handleBlur("email")}
+                inputIcon={<AntDesign onPress={()=>resetForm(values.email)} name="close" size={20} color="#fff" />}
+
               />
               <InputCard
                 placeholderText={"Şifre"}
                 handleChangeText={handleChange("password")}
                 handleValue={values.password}
                 handleBlur={handleBlur("password")}
-                secureText={true}
+                secureText={!openEye}
+                inputIcon={
+                  openEye == false
+                  ?  <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye" size={20} color="#fff" />
+                  : <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye-off" size={20} color="#fff" />
+                }
               />
             </View>
             <View style={styles.ButtonContainer}>

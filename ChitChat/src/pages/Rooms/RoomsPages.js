@@ -1,4 +1,4 @@
-import { FlatList, View, Alert } from "react-native";
+import { FlatList, View, Alert, SafeAreaView } from "react-native";
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/cards/RoomsCard/RoomsCard";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
@@ -9,8 +9,11 @@ import Animated, {
   BounceOutLeft,
 } from "react-native-reanimated";
 
+
 const RoomsPages = ({ navigation }) => {
   const [rooms, setRooms] = useState(null);
+
+
 
   useEffect(() => {
     getRooms();
@@ -80,14 +83,14 @@ const RoomsPages = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={rooms}
         renderItem={renderRooms}
         keyExtractor={(item, index) => index.toString()}
         style={styles.list}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

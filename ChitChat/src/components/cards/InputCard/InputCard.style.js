@@ -1,18 +1,25 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const {width, height} = Dimensions.get("window")
 
 export default styles = StyleSheet.create({
   inputContainer: {
     width: "100%",
+    height: height * 0.06,
     marginVertical: 10,
-  },
-  input: {
-    color: "white",
-    height: 56,
-    borderColor: "#000",
+    flexDirection: 'row',
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#FFF",
-    borderRadius: 10,
-    padding: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+
+  input: {
+    flex: 1,
+    color: "#fff",
+    borderColor: "#000",
   },
   title_box: {
     fontWeight: "bold",

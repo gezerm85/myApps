@@ -3,17 +3,16 @@ import { Dimensions, TouchableOpacity, Pressable } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import UserStack from "../UserStack/UserStack";
 import ProfilePages from "../../pages/Profile/ProfilePages";
-import { getAuth } from "firebase/auth";
 import {
-  FontAwesome5,
   AntDesign,
   FontAwesome,
-  Ionicons,
 } from "@expo/vector-icons";
 import { bgColor, color, color2 } from "../../utils/Colors";
 import HeaderButton from "../../components/HeaderButton/HeaderButton";
 
 const Tab = createBottomTabNavigator();
+
+const { width , height } = Dimensions.get('window')
 
 const UserTabs = () => {
   return (
@@ -22,7 +21,9 @@ const UserTabs = () => {
         tabBarLabel: () => null,
         tabBarStyle: {
           backgroundColor: "#252525",
-          height: 56,
+          height: height * 0.1,
+          alignItems: 'center',
+          justifyContent: 'center'
         },
         tabBarActiveTintColor: bgColor,
         tabBarInactiveTintColor: "#fff",

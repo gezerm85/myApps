@@ -1,18 +1,20 @@
-import { Text, View, TextInput } from "react-native";
+import {  View, TextInput } from "react-native";
 import React from "react";
 import styles from "./InputCard.style";
 
+
 const InputCard = ({
   placeholderText,
-  title,
+  inputIcon,
   secureText,
   handleChangeText,
   handleValue,
   handleBlur,
 }) => {
+
+
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.title_box}>{title}</Text>
       <TextInput
         style={styles.input}
         placeholderTextColor={"#fff"}
@@ -24,6 +26,11 @@ const InputCard = ({
         onBlur={handleBlur}
         autoCapitalize="none"
       />
+      {
+        handleValue
+        ? inputIcon
+        : null
+      }
     </View>
   );
 };

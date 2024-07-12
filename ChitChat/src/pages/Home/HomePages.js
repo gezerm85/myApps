@@ -1,4 +1,4 @@
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, SafeAreaView } from "react-native";
 import React from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import styles from "./HomePages.style";
@@ -6,7 +6,7 @@ import { bgColor } from "../../utils/Colors";
 
 const HomePages = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.imageBox}
@@ -53,7 +53,7 @@ const HomePages = ({ navigation }) => {
           <Text>{"\n"}Conditions</Text>
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,30 +1,25 @@
-import { View, Image, SafeAreaView, Dimensions } from "react-native";
-import React from "react";
+import { View, Image, SafeAreaView, Dimensions,  } from "react-native";
+import React, {useState} from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import InputCard from "../../components/cards/InputCard/InputCard";
 import { Formik } from "formik";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { showMessage } from "react-native-flash-message";
 import styles from "./SignUpPages.style";
+import { useDispatch } from "react-redux";
+import { signup, setEmail, setPassword, } from "../../redux/userSlice";
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const SignUpPages = ({ navigation }) => {
+  const [openEye, setOpenEye] = useState(false)
+
+  const dispatch = useDispatch()
+
+
   const handleSignUp = async (values, { resetForm }) => {
-    try {
-      const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
-      resetForm();
-      showMessage({
-        message: "SignUp",
-        description: "Kayıt Oldun :)",
-        type: "success",
-      });
-    } catch (error) {
-      showMessage({
-        message: "SignUp",
-        description: "Bir şeyler ters gitti :(",
-        type: "danger",
-      });
-    }
+    const {email, password, displayName} = values
+    dispatch(setEmail(email))
+    dispatch(setPassword(password))
+    dispatch(signup({email, password, displayName}))
+    resetForm()
   };
 
   return (
@@ -37,18 +32,19 @@ const SignUpPages = ({ navigation }) => {
       </View>
 
       <Formik
-        initialValues={{ name: "", email: "", password: "" }}
+        initialValues={{ displayName: "", email: "", password: "" }}
         onSubmit={handleSignUp}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, resetForm }) => (
           <View style={styles.formikContainer}>
             <View style={styles.InputContainer}>
               <InputCard
                 placeholderText={"İsim Giriniz"}
-                handleChangeText={handleChange("name")}
-                handleValue={values.name}
+                handleChangeText={handleChange("displayName")}
+                handleValue={values.displayName}
                 secureText={false}
-                handleBlur={handleBlur("name")}
+                handleBlur={handleBlur("displayName")}
+                inputIcon={<AntDesign onPress={()=>resetForm(values.displayName)} name="close" size={20} color="#fff" />}
               />
               <InputCard
                 placeholderText={"E-Posta Giriniz"}
@@ -56,13 +52,19 @@ const SignUpPages = ({ navigation }) => {
                 handleValue={values.email}
                 secureText={false}
                 handleBlur={handleBlur("email")}
+                inputIcon={<AntDesign onPress={()=>resetForm(values.email)} name="close" size={20} color="#fff" />}
               />
               <InputCard
                 placeholderText={"Paralo Oluştur"}
                 handleChangeText={handleChange("password")}
                 handleValue={values.password}
                 handleBlur={handleBlur("password")}
-                secureText={true}
+                secureText={!openEye}
+                inputIcon={
+                  openEye == false
+                  ?  <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye" size={20} color="#fff" />
+                  : <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye-off" size={20} color="#fff" />
+                }
               />
             </View>
 

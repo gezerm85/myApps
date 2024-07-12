@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
@@ -68,7 +69,7 @@ const MessagesPages = ({ route }) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.flatListContainer}
           data={messageContent}
@@ -88,7 +89,7 @@ const MessagesPages = ({ route }) => {
             <Ionicons name="send-sharp" size={24} color="#000000" />
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
