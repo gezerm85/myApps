@@ -24,7 +24,6 @@ export default styles = StyleSheet.create({
     flex: 2,
     width: "100%",
     justifyContent: "center",
-    alignItems: "center",
     paddingHorizontal: 16,
     marginBottom: 70,
   },
@@ -39,5 +38,9 @@ export default styles = StyleSheet.create({
     width: 180,
     height: 180,
     resizeMode: "contain",
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'left',
   },
 });

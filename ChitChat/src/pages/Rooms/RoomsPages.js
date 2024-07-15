@@ -11,7 +11,7 @@ import Animated, {
 
 
 const RoomsPages = ({ navigation }) => {
-  const [rooms, setRooms] = useState(null);
+  const [rooms, setRooms] = useState([]);
 
 
 
@@ -28,13 +28,14 @@ const RoomsPages = ({ navigation }) => {
         const roomNames = Object.values(data);
         setRooms(roomNames);
       } else {
-        setRooms(null);
+        setRooms([]);
       }
     });
   }
 
   const handleRemove = (id) => {
     const roomRef = ref(db, `Rooms/${id}`);
+
 
     remove(roomRef)
       .then(() => {
@@ -75,7 +76,7 @@ const RoomsPages = ({ navigation }) => {
       >
         <RoomsCard
           title={item}
-          handleOnLongPress={() => handleOnLongPress(index)}
+          onPressRemove={() => handleOnLongPress(index)}
           handleOnPress={() => handleRoomsDetail(item)}
         />
       </Animated.View>

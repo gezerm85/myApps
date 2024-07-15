@@ -26,16 +26,16 @@ const HeaderButton = () => {
   };
 
   function writeUserData(text) {
-    const userMail = getAuth().currentUser.email;
+    const userName = getAuth().currentUser.displayName;
 
     const db = getDatabase();
-    const roomsRef = ref(db, "Rooms");
+    const roomsRef = ref(db, "Rooms/");
     const newRoomRef = push(roomsRef);
     set(newRoomRef, {
       roomName: text,
       date: new Date().toISOString(),
       id: newRoomRef.key,
-      userName: userMail.split("@")[0],
+      userName: userName,
     })
       .then(() => {
         showMessage({

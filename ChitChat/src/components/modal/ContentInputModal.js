@@ -31,7 +31,6 @@ const ContentInputModal = ({ visible, onClose, onSend }) => {
               onChangeText={setText}
               value={text}
               placeholder="Oda İsmini Yazınız"
-              multiline={true}
               style={styles.inputbox}
               autoCapitalize="sentences"
             />

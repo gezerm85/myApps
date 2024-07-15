@@ -25,6 +25,7 @@ export default styles = StyleSheet.create({
   },
   inputbox: {
     flex: 1,
+    
   },
   btn: {
     width: "20%",

@@ -15,7 +15,7 @@ export default styles = StyleSheet.create({
     alignItems: "center",
   },
   formikContainer: {
-    flex: 4,
+    flex: 5,
     width: "100%",
     height: "100%",
   },
@@ -23,7 +23,6 @@ export default styles = StyleSheet.create({
     flex: 2,
     width: "100%",
     justifyContent: "center",
-    alignItems: "center",
     paddingHorizontal: 16,
     marginVertical: 100,
   },
@@ -40,4 +39,8 @@ export default styles = StyleSheet.create({
     height: 180,
     resizeMode: "contain",
   },
+  errorText: {
+    color: 'red',
+    textAlign: 'left',
+  }
 });

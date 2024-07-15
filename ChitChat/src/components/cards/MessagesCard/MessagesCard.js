@@ -1,5 +1,5 @@
-import { Text, View,  } from "react-native";
-import React from "react";
+import { Image, Text, View,  } from "react-native";
+import React, {useEffect, useState} from "react";
 import { parseISO, format } from "date-fns";
 import { tr } from "date-fns/locale";
 import styles from "./MessagesCard.style";
@@ -7,12 +7,16 @@ import { getAuth } from "firebase/auth";
 import { color3, color } from "../../../utils/Colors";
 
 const MessagesCard = ({ message }) => {
+
   const formatDate = format(parseISO(message.date), "HH:mm'", {
     locale: tr,
   });
 
-  const userMail = getAuth().currentUser.email;
-  const userName = userMail.split("@")[0];
+  const user = getAuth().currentUser;
+  const userName = user.displayName;
+
+
+
 
   return (
     <View
@@ -26,7 +30,9 @@ const MessagesCard = ({ message }) => {
         },
       ]}
     >
-      <View style={styles.innerContainer}>
+      { userName == message.userName
+      ?(
+        <View style={styles.innerContainer}>
         <Text
           style={[
             styles.content_user,
@@ -35,38 +41,94 @@ const MessagesCard = ({ message }) => {
             },
           ]}
         >
-          {message.userName}
+          {message.userName} 
         </Text>
+        <Image style={styles.image}  source={{uri: message.userImage}} />
       </View>
-      <View
-        style={[
-          styles.messageContainer,
-          {
-            color: userName == message.userName ? color : "#fff",
-          },
-        ]}
-      >
+      )
+      :(
+        <View style={styles.innerContainer}>
+        <Image style={styles.image}  source={{uri: message.userImage}} />
         <Text
           style={[
-            styles.content_message,
+            styles.content_user,
             {
               color: userName == message.userName ? color : "#fff",
             },
           ]}
         >
-          {message.Message}
-        </Text>
-        <Text
-          style={[
-            styles.content_date,
-            {
-              color: userName == message.userName ? color : "#fff",
-            },
-          ]}
-        >
-          {formatDate}
+          {message.userName} 
         </Text>
       </View>
+      )
+        
+      }
+ {userName == message.userName 
+ ? (
+  <View
+  style={[
+    styles.messageContainer,
+    {
+      color: userName == message.userName ? color : "#fff",
+    },
+  ]}
+>
+  <Text
+    style={[
+      styles.content_message,
+      {
+        color: userName == message.userName ? color : "#fff",
+      },
+    ]}
+  >
+    {message.Message}
+  </Text>
+  <Text
+    style={[
+      styles.content_date,
+      {
+        color: userName == message.userName ? color : "#fff",
+      },
+    ]}
+  >
+    {formatDate}
+  </Text>
+</View>
+ )
+ :(
+  <View
+  style={[
+    styles.messageContainer,
+    {
+      color: userName == message.userName ? color : "#fff",
+    },
+  ]}
+>
+<Text
+    style={[
+      styles.content_date,
+      {
+        color: userName == message.userName ? color : "#fff",
+      },
+    ]}
+  >
+    {formatDate}
+  </Text>
+  <Text
+    style={[
+      styles.content_message,
+      {
+        color: userName == message.userName ? color : "#fff",
+      },
+    ]}
+  >
+    {message.Message}
+  </Text>
+
+</View>
+ )
+
+ }
     </View>
   );
 };

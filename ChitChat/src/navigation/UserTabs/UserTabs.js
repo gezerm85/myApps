@@ -4,17 +4,23 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import UserStack from "../UserStack/UserStack";
 import ProfilePages from "../../pages/Profile/ProfilePages";
 import {
+  Feather,
   AntDesign,
   FontAwesome,
 } from "@expo/vector-icons";
 import { bgColor, color, color2 } from "../../utils/Colors";
 import HeaderButton from "../../components/HeaderButton/HeaderButton";
+import { useNavigation } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
 const { width , height } = Dimensions.get('window')
 
 const UserTabs = () => {
+  const nav = useNavigation()
+  const goToAccountEdit = () => {
+    nav.navigate('AccountEdit');
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -37,6 +43,7 @@ const UserTabs = () => {
     >
       <Tab.Screen
         options={{
+          
           title: "Odalar",
           tabBarIcon: ({ color }) => (
             <AntDesign name="message1" size={24} color={color} />
@@ -56,10 +63,23 @@ const UserTabs = () => {
       <Tab.Screen
         options={{
           title: "Profil",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            paddingLeft: 16
+          },
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user-o" size={24} color={color} />
           ),
           headerShown: true,
+/*           headerRight: ()=> (
+            <TouchableOpacity onPress={goToAccountEdit}>
+              <Feather name="edit" size={18} color="#fff" />
+            </TouchableOpacity>
+          ), */
+          headerRightContainerStyle: {
+            paddingRight: 16
+            
+          }
         }}
         name="Profile"
         component={ProfilePages}

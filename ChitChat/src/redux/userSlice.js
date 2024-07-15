@@ -5,8 +5,6 @@ import { showMessage } from "react-native-flash-message";
 import { getDatabase, set, ref, push, get } from 'firebase/database';
 import { db } from '../../firebaseConfig';
 
-
-
 export const login = createAsyncThunk('user/login', async({email, password, })=>{
    
         
@@ -55,44 +53,46 @@ export const login = createAsyncThunk('user/login', async({email, password, })=>
   
 })
 
-export const signup = createAsyncThunk('user/signup', async ({email, password,displayName})=> {
-    try {
-        const auth = getAuth()
-        const userCredential =  await createUserWithEmailAndPassword(auth, email, password)
-        const user = userCredential.user
-        const token = user.stsTokenManager.accessToken;
+export const signup = createAsyncThunk('user/signup', async ({ email, password, displayName, photoURL }) => {
+  try {
+    const auth = getAuth();
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const token = user.stsTokenManager.accessToken;
 
-        await updateProfile(user, {
-          displayName: displayName,
-        });
+    await updateProfile(user, {
+      displayName: displayName,
+      photoURL: photoURL,
+    });
 
-        const userData = {
-            token,
-            user: {
-                email: user.email,
-                displayName: user.displayName,
-                uid: user.uid
-              }
-        }
+    const userData = {
+      token,
+      user: {
+        email: user.email,
+        displayName: user.displayName,
+        uid: user.uid,
+        photoURL: user.photoURL,
+      },
+    };
 
-        await AsyncStorage.setItem('userToken', JSON.stringify({email,password}))
+    await AsyncStorage.setItem('userToken', JSON.stringify({ email, password }));
 
-        showMessage({
-            message: "SignUp",
-            description: "Kayıt Oldun :)",
-            type: "success",
-          });
+    showMessage({
+      message: "SignUp",
+      description: "Kayıt Oldun :)",
+      type: "success",
+    });
 
-          return userData
-        
-    } catch (error) {
-        showMessage({
-            message: "SignUp",
-            description: "Bir şeyler ters gitti :(",
-            type: "danger",
-          });
-    }
-} )
+    return userData;
+  } catch (error) {
+    showMessage({
+      message: "SignUp",
+      description: "Bir şeyler ters gitti :(",
+      type: "danger",
+    });
+    throw error;
+  }
+});
 
 export const autoLogin = createAsyncThunk('user/autoLogin', async ()=>{
     try {

@@ -14,9 +14,10 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
         headerStyle: { backgroundColor: bgColor },
+        
       }}
     >
-      <Stack.Screen name="Home" component={HomePages} />
+      <Stack.Screen  name="Home" component={HomePages} />
       <Stack.Screen name="Login" component={LoginPages} />
       <Stack.Screen name="SignUp" component={SignUpPages} />
     </Stack.Navigator>

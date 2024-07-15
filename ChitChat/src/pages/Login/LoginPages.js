@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import styles from "./LoginPages.style";
 import { autoLogin, login} from "../../redux/userSlice";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { ValidationSchema } from "../../validation/ValidationSchema";
 
 const LoginPages = ({ navigation }) => {
   const [openEye, setOpenEye] = useState(false)

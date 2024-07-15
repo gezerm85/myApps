@@ -23,13 +23,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.chitchat"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/ChitChat_icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.example.chitchat"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

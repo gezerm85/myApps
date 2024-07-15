@@ -10,19 +10,23 @@ export default styles = StyleSheet.create({
     borderBottomLeftRadius: 18,
     marginVertical: 12,
     alignSelf: "flex-end",
-    padding: 8,
+    padding: 10,
     gap: 6,
     maxWidth: "90%",
   },
   innerContainer: {
     flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10
   },
   messageContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     gap: 6,
+
   },
   content_user: {
     color: color,
@@ -37,4 +41,9 @@ export default styles = StyleSheet.create({
     color: color,
     fontWeight: "bold",
   },
+  image:{
+    width: 30,
+    height: 30,
+    borderRadius: '100%'
+  }
 });
