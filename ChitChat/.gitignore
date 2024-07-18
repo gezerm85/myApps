@@ -3,6 +3,11 @@
 # dependencies
 node_modules/
 
+# Ignore iOS and Android native project folders
+ios/
+android/
+
+
 # Expo
 .expo/
 dist/
