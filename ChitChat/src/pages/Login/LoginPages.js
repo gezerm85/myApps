@@ -1,28 +1,28 @@
-import { View, Image, SafeAreaView } from "react-native";
+import { View, Image, SafeAreaView, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import InputCard from "../../components/cards/InputCard/InputCard";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import styles from "./LoginPages.style";
-import { autoLogin, login} from "../../redux/userSlice";
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { autoLogin, login } from "../../redux/userSlice";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { ValidationSchema } from "../../validation/ValidationSchema";
 
 const LoginPages = ({ navigation }) => {
-  const [openEye, setOpenEye] = useState(false)
+  const [openEye, setOpenEye] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleLogin = async (values, { resetForm }) => {
     const { email, password } = values;
-    dispatch(login({email, password}))
-    resetForm()
+    dispatch(login({ email, password }));
+    resetForm();
   };
 
-  useEffect(()=>{
-    dispatch(autoLogin())
-  },[dispatch])
+  useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,8 +35,17 @@ const LoginPages = ({ navigation }) => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={handleLogin}
+        validationSchema={ValidationSchema}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, resetForm}) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          resetForm,
+          errors,
+          touched,
+        }) => (
           <View style={styles.formikContainer}>
             <View style={styles.InputContainer}>
               <InputCard
@@ -45,9 +54,18 @@ const LoginPages = ({ navigation }) => {
                 handleValue={values.email}
                 secureText={false}
                 handleBlur={handleBlur("email")}
-                inputIcon={<AntDesign onPress={()=>resetForm(values.email)} name="close" size={20} color="#fff" />}
-
+                inputIcon={
+                  <AntDesign
+                    onPress={() => resetForm(values.email)}
+                    name="close"
+                    size={20}
+                    color="#fff"
+                  />
+                }
               />
+              {touched.email && errors.email && (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              )}
               <InputCard
                 placeholderText={"Şifre"}
                 handleChangeText={handleChange("password")}
@@ -55,11 +73,26 @@ const LoginPages = ({ navigation }) => {
                 handleBlur={handleBlur("password")}
                 secureText={!openEye}
                 inputIcon={
-                  openEye == false
-                  ?  <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye" size={20} color="#fff" />
-                  : <Ionicons onPress={()=> setOpenEye(!openEye)} name="eye-off" size={20} color="#fff" />
+                  openEye == false ? (
+                    <Ionicons
+                      onPress={() => setOpenEye(!openEye)}
+                      name="eye"
+                      size={20}
+                      color="#fff"
+                    />
+                  ) : (
+                    <Ionicons
+                      onPress={() => setOpenEye(!openEye)}
+                      name="eye-off"
+                      size={20}
+                      color="#fff"
+                    />
+                  )
                 }
               />
+              {touched.password && errors.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
             </View>
             <View style={styles.ButtonContainer}>
               <CustomButton

@@ -129,24 +129,7 @@ export const logOut = createAsyncThunk('user/logOut', async ()=>{
    }
 })
 
-export const getUserName = createAsyncThunk('user/UserName', async () => {
-  try {
-    const auth = getAuth()
-    
-    const db = getDatabase();
-    const dbRef = ref(db, 'User/-O1XAworUcXJLgHpH0Iz'); 
-    const snapshot = await get(dbRef);
 
-    if (snapshot.exists()) {
-      return snapshot.val();
-    } else {
-      throw new Error('No data available');
-    }
-  } catch (error) {
-    console.error("Firebase Error:", error);
-    throw error;
-  }
-});
 
 
 
@@ -270,19 +253,7 @@ export const userSlice = createSlice({
                 state.error = action.error.message
             })
             
-            // GETUSER
-
-            .addCase(getUserName.pending, (state) => {
-              state.isloading = true;
-            })
-            .addCase(getUserName.fulfilled, (state, action) => {
-              state.isloading = false
-              state.userName = action.payload;
-            })
-            .addCase(getUserName.rejected, (state, action) => {
-              state.isloading = false
-              state.error = action.error.message;
-            });
+            
 
   }
 })

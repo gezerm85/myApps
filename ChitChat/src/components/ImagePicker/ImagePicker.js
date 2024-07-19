@@ -1,7 +1,6 @@
 import {
   Image,
   View,
-  StyleSheet,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
@@ -9,6 +8,7 @@ import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { getAuth, updateProfile } from "firebase/auth";
 import avatar from '../../assets/images/avatar.png'
+import styles from './ImagePicker.style'
 
 const ImagePickerComponent = () => {
   const [image, setImage] = useState(null);
@@ -52,24 +52,5 @@ const ImagePickerComponent = () => {
 
 export default ImagePickerComponent;
 
-const { height, width } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
-  container: {
-    width: width * 0.4,
-    height: width * 0.4,
-    borderRadius: 10000,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-  },
-  bodyContainer: {
-    flex: 1,
-  },
-  image: {
-    width: width * 0.4,
-    height: width * 0.4,
-    borderRadius: 10000,
-    resizeMode: "cover",
-  },
-});
+

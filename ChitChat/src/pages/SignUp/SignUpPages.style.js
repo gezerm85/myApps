@@ -15,12 +15,12 @@ export default styles = StyleSheet.create({
     alignItems: "center",
   },
   formikContainer: {
-    flex: 5,
+    flex: 6,
     width: "100%",
     height: "100%",
   },
   InputContainer: {
-    flex: 2,
+    flex: 3,
     width: "100%",
     justifyContent: "center",
     paddingHorizontal: 16,
@@ -42,5 +42,6 @@ export default styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign: 'left',
+    
   }
 });

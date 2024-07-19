@@ -3,8 +3,23 @@ import React from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import styles from "./HomePages.style";
 import { bgColor } from "../../utils/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const HomePages = ({ navigation }) => {
+
+  const nav = useNavigation()
+
+  const handleLoginOnPress = async ()=> {
+    await AsyncStorage.setItem('hasVisited', 'true')
+    nav.navigate("Login")
+  }
+  const handleSignUpOnPress = async ()=> {
+    await AsyncStorage.setItem('hasVisited', 'true')
+    nav.navigate("SignUp")
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
@@ -33,14 +48,14 @@ const HomePages = ({ navigation }) => {
           btnColor={"#FFC805"}
           btnPressColor={"#CCA004"}
           setWidth={"100%"}
-          onPress={() => navigation.navigate("Login")}
+          onPress={handleLoginOnPress}
           title={"Giriş Yap"}
         />
         <CustomButton
           btnColor={null}
           btnPressColor={"#FFC805"}
           setWidth={"100%"}
-          onPress={() => navigation.navigate("SignUp")}
+          onPress={handleSignUpOnPress}
           title={"Kayıt Ol"}
           setBorder={1}
           setBorderColor={"#fff"}
