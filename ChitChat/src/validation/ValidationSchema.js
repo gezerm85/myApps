@@ -8,3 +8,9 @@ export const ValidationSchema = yup.object({
         .required("Şifre tekrarı zorunlu")
         .oneOf([yup.ref("password")], "Şifreler eşleşmiyor")
 });
+
+
+export const ValidationSchemaLogin = yup.object({
+    email: yup.string().email("Geçerli bir email adresi girin").required("Email zorunlu"),
+    password: yup.string().required("Şifre zorunlu")
+});
