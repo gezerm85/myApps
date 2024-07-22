@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get("window");
 
 export default styles = StyleSheet.create({
-    container: {
+      container: {
         width: width * 0.4,
         height: width * 0.4,
         borderRadius: 10000,
@@ -11,13 +11,9 @@ export default styles = StyleSheet.create({
         justifyContent: "center",
         borderWidth: 1,
       },
-      bodyContainer: {
-        flex: 1,
-      },
       image: { 
-        width: width * 0.4,
-        height: width * 0.4,
+        width: 200,
+        height: 200,
         borderRadius: 10000,
-        resizeMode: "cover",
-      },
+        resizeMode: "cover",},
 })

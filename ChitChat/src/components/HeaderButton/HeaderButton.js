@@ -27,14 +27,15 @@ const HeaderButton = () => {
 
   function writeUserData(text) {
     const userName = getAuth().currentUser.displayName;
+    const userId = getAuth().currentUser.uid
 
     const db = getDatabase();
-    const roomsRef = ref(db, "Rooms/");
-    const newRoomRef = push(roomsRef);
-    set(newRoomRef, {
+    const roomsRef = ref(db, `Rooms/${userId}/`);
+    
+    set(roomsRef, {
       roomName: text,
       date: new Date().toISOString(),
-      id: newRoomRef.key,
+      id: userId,
       userName: userName,
     })
       .then(() => {

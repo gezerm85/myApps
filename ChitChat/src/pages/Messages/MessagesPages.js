@@ -14,23 +14,32 @@ import { getAuth } from "firebase/auth";
 import MessagesCard from "../../components/cards/MessagesCard/MessagesCard";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./MessagesPages.style";
+import Animated, { FlipInEasyX, LightSpeedInRight,RotateInDownLeft } from 'react-native-reanimated'
+
+
 
 const MessagesPages = ({ route }) => {
+
+
   const { item } = route.params;
 
   const auth = getAuth().currentUser;
-  const userImage = auth.photoURL
+
+
+
 
   const [messageContent, setMessageContent] = useState([]);
   const [text, setText] = useState("");
-  const [keys, setKeys] = useState();
+
+
+
 
 
 
   useEffect(() => {
-    getMessages();
+    getMessages()
   }, []);
-
+  
   function getMessages() {
     const db = getDatabase();
     const starCountRef = ref(db, `Rooms/${item.id}/Messages`);
@@ -38,8 +47,6 @@ const MessagesPages = ({ route }) => {
       const data = snapshot.val();
       if (data) {
         const massageData = Object.values(data);
-        const messageKeys = Object.keys(data)
-        setKeys(messageKeys)
 
         setMessageContent(massageData);
         setText("");
@@ -55,15 +62,15 @@ const MessagesPages = ({ route }) => {
       return;
     }
     const userName = auth.displayName
-    const userImage = auth.photoURL
+    const userId = auth.uid
 
-    const massageRef = ref(db, `Rooms/${item.id}/Messages`);
-    const newMassageRef = push(massageRef);
-    set(newMassageRef, {
+    const messageRef = ref(db, `Rooms/${item.id}/Messages/`);
+    const massageData = push(messageRef)
+    set(massageData, {
       roomsName: item.roomName,
+      userId: userId,
       Message: text,
       userName: userName,
-      userImage: userImage,
       date: new Date().toISOString(),
     })
       .then(() => {})
@@ -74,27 +81,19 @@ const MessagesPages = ({ route }) => {
 
 
 
-  const updateUser= async () => {
-    try {
-      if (keys.length > 0) {
-        const userKey = keys[0]; 
-        await update(ref(db, `Rooms/${item.id}/Messages/${userKey}`), {
-          userImage: userImage, 
-        });
-      } else {
-      }
-    } catch (error) {
-    }
-  };
 
-  useEffect(() => {
-    updateUser()
-  }, [userImage]);
+
   
 
 
   const renderContent = ({ item }) => {
-    return <MessagesCard message={item} />;
+    return (
+      <Animated.View
+        entering={RotateInDownLeft}
+      >
+        <MessagesCard message={item}  />
+      </Animated.View>
+    );
   };
 
   return (

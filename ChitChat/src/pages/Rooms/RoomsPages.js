@@ -1,14 +1,14 @@
 import { FlatList, View, Alert, SafeAreaView } from "react-native";
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/cards/RoomsCard/RoomsCard";
-import { getDatabase, ref, onValue, remove } from "firebase/database";
+import { getDatabase, ref, onValue, remove, set } from "firebase/database";
 import { db } from "../../../firebaseConfig";
 import styles from "./RoomsPages.style";
 import Animated, {
   BounceInRight,
   BounceOutLeft,
 } from "react-native-reanimated";
-
+import { getAuth } from "firebase/auth";
 
 const RoomsPages = ({ navigation }) => {
   const [rooms, setRooms] = useState([]);
@@ -35,7 +35,6 @@ const RoomsPages = ({ navigation }) => {
 
   const handleRemove = (id) => {
     const roomRef = ref(db, `Rooms/${id}`);
-
 
     remove(roomRef)
       .then(() => {

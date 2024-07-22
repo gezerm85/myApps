@@ -6,6 +6,8 @@ import styles from "./MessagesCard.style";
 import { getAuth } from "firebase/auth";
 import { color3, color } from "../../../utils/Colors";
 
+
+
 const MessagesCard = ({ message }) => {
 
   const formatDate = format(parseISO(message.date), "HH:mm'", {
@@ -18,7 +20,7 @@ const MessagesCard = ({ message }) => {
 
 
 
-  return (
+  return ( 
     <View
       style={[
         styles.container,
@@ -30,8 +32,6 @@ const MessagesCard = ({ message }) => {
         },
       ]}
     >
-      { userName == message.userName
-      ?(
         <View style={styles.innerContainer}>
         <Text
           style={[
@@ -41,28 +41,10 @@ const MessagesCard = ({ message }) => {
             },
           ]}
         >
-          {message.userName} 
+          {message.userName}
         </Text>
-        <Image style={styles.image}  source={{uri: message.userImage}} />
-      </View>
-      )
-      :(
-        <View style={styles.innerContainer}>
-        <Image style={styles.image}  source={{uri: message.userImage}} />
-        <Text
-          style={[
-            styles.content_user,
-            {
-              color: userName == message.userName ? color : "#fff",
-            },
-          ]}
-        >
-          {message.userName} 
-        </Text>
-      </View>
-      )
         
-      }
+      </View>
  {userName == message.userName 
  ? (
   <View
