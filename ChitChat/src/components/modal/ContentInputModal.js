@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import React, { useState } from "react";
 import Modal from "react-native-modal";
 import styles from "./ContentInputModal.style";
@@ -7,7 +7,7 @@ const ContentInputModal = ({ visible, onClose, onSend }) => {
   const [text, setText] = useState("");
   const handleSend = () => {
     if (text.trim() === "") {
-      alert("Bir Oda İsmi Giriniz");
+      Alert.alert("Uyarı", "Bir Oda İsmi Giriniz");
       return;
     }
     onSend(text);
@@ -36,9 +36,11 @@ const ContentInputModal = ({ visible, onClose, onSend }) => {
             />
           </View>
         </View>
+        <View>
         <TouchableOpacity style={styles.btn} onPress={handleSend}>
           <Text style={styles.btn_text}>Ekle</Text>
         </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );

@@ -42,6 +42,6 @@ export default styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign: 'left',
-    
+    paddingLeft: 12
   }
 });

@@ -16,6 +16,19 @@ const ImagePickerComponent = () => {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
+    // Get user data when component mounts
+    getUserData();
+
+    // Request permissions for image picker
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (image !== null) {
       writeUserData();
     }
@@ -54,21 +67,21 @@ const ImagePickerComponent = () => {
   };
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    } catch (err) {
+      console.error("Error picking image:", err);
     }
   };
-
-  useEffect(() => {
-    getUserData();
-  }, [image]);
 
   return (
     <View>

@@ -12,6 +12,7 @@ const CustomButton = ({
   onPress,
   setBorder,
   setBorderColor,
+  onPressBorderColor,
 }) => {
   return (
     <Pressable
@@ -21,7 +22,7 @@ const CustomButton = ({
           backgroundColor: pressed ? btnPressColor : btnColor,
           width: setWidth,
           borderWidth: setBorder,
-          borderColor: setBorderColor,
+          borderColor: pressed ? onPressBorderColor : setBorderColor  ,
         },
         styles.container,
       ]}

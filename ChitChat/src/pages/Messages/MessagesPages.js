@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { getDatabase, ref, set, push, onValue, update } from "firebase/database";
@@ -58,7 +59,6 @@ const MessagesPages = ({ route }) => {
 
   function writeUserData() {
     if (!text.trim()) {
-      alert("Oda İsmi Giriniz");
       return;
     }
     const userName = auth.displayName
